@@ -23,6 +23,8 @@ function lastGameBySummonerName(message, leagueJs, summonerName) {
         leagueJs.Match.gettingListByAccount(summ.puuid, { beginIndex: 0, endIndex: 1 }).then(
             (data) => {
                 const last_match = data['matches'][0];
+                console.log(last_match['metadata']);
+                console.log(last_match['info']);
                 const participants = last_match['info']['participants'];
                 let output = '';
                 for (const player of participants) {
