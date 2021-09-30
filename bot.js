@@ -3,8 +3,13 @@ const { Client, Intents } = require('discord.js');
 const handleMessage = require('./handleMessage');
 const LeagueJS = require('leaguejs/lib/LeagueJS');
 
-// load the bot token from .env
+// load the environment
 dotenv.config();
+
+// Riot API interactions
+const leagueJs = new LeagueJS(process.env.RIOT_API_KEY, {
+    PLATFORM_ID: process.env.LEAGUE_API_PLATFORM_ID,
+});
 
 // Discord bot interactions
 
@@ -23,24 +28,19 @@ client.once('ready', () => {
 // login
 client.login(process.env.DISCORD_TOKEN);
 // message handling
-client.on('messageCreate', handleMessage);
+client.on('messageCreate', handleMessage(leagueJs));
 
-// Riot API interactions
-const leagueJs = new LeagueJS(process.env.RIOT_API_KEY, {
-    PLATFORM_ID: process.env.LEAGUE_API_PLATFORM_ID,
-});
+function comparefunc(x, y) {
+    // sort games from most recent to oldest
+    if (Number(x['timestamp']) > Number(y['timestamp'])) return -1;
+    if (Number(x['timestamp']) > Number(y['timestamp'])) return 1;
+    return 0;
+}
 
-leagueJs.Summoner.gettingByName('Hgis').then((summ) => {
-    const hgis = summ;
-    console.log('\n Hgis : \n');
-    console.log(hgis);
-    leagueJs.Match.gettingListByAccount(hgis?.accountId).then((data) => {
-        const last_match = data['matches'][0];
-        console.log('\n last match :\n');
-        console.log(last_match);
-        leagueJs.StaticData.gettingChampionById(last_match['champion']).then((champ) => {
-            console.log('\n champion : \n');
-            console.log(champ);
-        });
-    });
-});
+// leagueJs.Summoner.gettingByName('Hgis').then((hgis) => {
+//     leagueJs.Match.gettingRecentListByAccountV5(hgis.puuid).then((matches) => {
+// matches['matches'].sort(comparefunc);
+// console.log(matches['matches'][0]);
+// console.log(new Date(matches['matches'][0]['timestamp']));
+//     });
+// });

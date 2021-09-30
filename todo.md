@@ -30,3 +30,7 @@ This requires:
 - a way to get the current game
 - a way to get the passed games of a player
 - a way to print a bunch of info cleanly on Discord (embed msgs ?)
+
+### Last match history
+
+On request with a given player's name, output the last amtch in their history.
