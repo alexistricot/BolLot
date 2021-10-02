@@ -30,17 +30,9 @@ client.login(process.env.DISCORD_TOKEN);
 // message handling
 client.on('messageCreate', handleMessage(leagueJs));
 
-function comparefunc(x, y) {
-    // sort games from most recent to oldest
-    if (Number(x['timestamp']) > Number(y['timestamp'])) return -1;
-    if (Number(x['timestamp']) > Number(y['timestamp'])) return 1;
-    return 0;
-}
-
-// leagueJs.Summoner.gettingByName('Hgis').then((hgis) => {
-//     leagueJs.Match.gettingRecentListByAccountV5(hgis.puuid).then((matches) => {
-// matches['matches'].sort(comparefunc);
-// console.log(matches['matches'][0]);
-// console.log(new Date(matches['matches'][0]['timestamp']));
-//     });
-// });
+// function comparefunc(x, y) {
+//     // sort games from most recent to oldest
+//     if (Number(x['timestamp']) > Number(y['timestamp'])) return -1;
+//     if (Number(x['timestamp']) > Number(y['timestamp'])) return 1;
+//     return 0;
+// }
