@@ -11,7 +11,11 @@ module.exports = function(leagueJs) {
         const commandName = args.shift().toLowerCase();
         switch (commandName) {
         case 'last':
-            lastGameBySummonerName(message, leagueJs, args[0]);
+            lastGameBySummonerName(
+                message,
+                leagueJs,
+                args.reduce((r, x) => r + ' ' + String(x)),
+            );
             break;
         default:
             break;
