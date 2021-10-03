@@ -1,9 +1,5 @@
 {
     "ID": "889939175862845510",
     "permissions": "534925278272",
-    "prefix": "!",
-    "teams": {
-        "100": ":blue_square:",
-        "200": ":red_square:"
-    }
+    "prefix": "!"
 }

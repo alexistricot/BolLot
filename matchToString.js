@@ -1,4 +1,4 @@
-const config = require('./config.json');
+const data = require('./data.json');
 
 module.exports = function matchToString(match) {
     // initialize output
@@ -7,11 +7,11 @@ module.exports = function matchToString(match) {
     const date = matchDate(match);
     const winID = winningTeamID(match);
     output += `Game from ${date}, `;
-    output += `${String(config['teams'][winID])} won\n\n`;
+    output += `${String(data['teams'][winID])} won\n\n`;
     // participants KDA
     const participants = match['info']['participants'];
     for (const player of participants) {
-        const team = config['teams'][String(player['teamId'])];
+        const team = data['teams'][String(player['teamId'])];
         output += `${team} **${player['summonerName']}** *${player['championName']}* `;
         output += `${player['kills']}/${player['deaths']}/${player['assists']}`;
         output += '\n';
