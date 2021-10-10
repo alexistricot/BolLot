@@ -2,6 +2,7 @@ const dotenv = require('dotenv');
 const { Client, Intents } = require('discord.js');
 const handleMessage = require('./handleMessage');
 const LeagueJS = require('leaguejs/lib/LeagueJS');
+const listenForGames = require('./listenForGames');
 
 // load the environment
 dotenv.config();
@@ -29,6 +30,8 @@ client.once('ready', () => {
 client.login(process.env.DISCORD_TOKEN);
 // message handling
 client.on('messageCreate', handleMessage(leagueJs));
+// listen for starting games
+listenForGames(leagueJs, client);
 
 // function comparefunc(x, y) {
 //     // sort games from most recent to oldest
