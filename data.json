@@ -2,5 +2,9 @@
     "teams": {
         "100": ":blue_square:",
         "200": ":red_square:"
+    },
+    "rankedQueueType": {
+        "RANKED_FLEX_SR": "FLEX",
+        "RANKED_SOLO_5x5": "SOLO"
     }
 }
