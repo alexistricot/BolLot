@@ -11,7 +11,6 @@ function listenForGames(leagueJs, discordClient) {
 
 function errorHandling(err) {
     if (err) {
-        console.error(err);
         throw err;
     }
 }
@@ -33,7 +32,6 @@ function getCurrentGames(leagueJs, discordClient) {
                     }
                 })
                 .catch((err) => {
-                    console.log(err);
                     if (err & err.error & err?.error.includes('Data not found')) return;
                 });
         }

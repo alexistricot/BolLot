@@ -18,8 +18,10 @@ function currentMatchToString(match, leagueJs, discordClient) {
         summonerName.push(String(player['summonerName']));
         summonerId.push(String(player['summonerId']));
     }
-    const promises = championId.map((x) => leagueJs.StaticData.gettingChampionById(x));
-    promises.concat(summonerName.map((x) => leagueJs.League.gettingLeagueEntriesForSummonerId(x)));
+    let promises = championId.map((x) => leagueJs.StaticData.gettingChampionById(x));
+    promises = promises.concat(
+        summonerId.map((x) => leagueJs.League.gettingLeagueEntriesForSummonerId(x)),
+    );
     Promise.all(promises).then(handlePromises(discordClient, summonerName, team, gameType));
 }
 
@@ -34,14 +36,16 @@ function getChannel(discordClient) {
 
 function handlePromises(discordClient, summonerName, team, gameType) {
     return (championLeague) => {
+        console.log(championLeague);
         const champion = championLeague.slice(0, championLeague.length / 2);
+        console.log(champion);
         const league = championLeague.slice(championLeague.length / 2);
-        let output = `${gameTypeToString(gameType)} game started`;
+        console.log(league);
+        let output = `${gameTypeToString(gameType)} game started\n`;
         for (let i = 0; i < summonerName.length; i++) {
             output += `${team[i]} **${summonerName[i]}** *${champion[i]['name']}*`;
             output += ' | ';
             output += leagueToString(league[i]);
-            output += '\n';
         }
         const channel = getChannel(discordClient);
         send_string(channel, output);
@@ -55,10 +59,15 @@ function gameTypeToString(gameType) {
 function leagueToString(leagues) {
     let output = '';
     for (let i = 0; i < leagues.length; i++) {
-        output += data['rankedQueueType'][leagues[i]['queueType']];
-        output += ` ${leagues[i]['tier']} ${leagues[i]['tier']}`;
-        output += ` (${leagues[i]['wins']}-${leagues[i]['losses']})`;
+        output += bold(data['rankedQueueType'][leagues[i]['queueType']]);
+        output += ` ${leagues[i]['tier']} ${leagues[i]['rank']}`;
+        output += ` *(${leagues[i]['wins']}-${leagues[i]['losses']})*`;
+        output += ' | ';
     }
     output += '\n';
     return output;
+}
+
+function bold(str) {
+    return '**' + str + '**';
 }
