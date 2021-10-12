@@ -32,7 +32,10 @@ function getCurrentGames(leagueJs, discordClient) {
                     }
                 })
                 .catch((err) => {
-                    if (err & err.error & err?.error.includes('Data not found')) return;
+                    if (err & err.error & err?.error.includes('Data not found')) {
+			console.log("Not match found.");
+			return;
+		    }
                 });
         }
     };
