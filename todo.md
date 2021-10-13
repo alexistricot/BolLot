@@ -2,21 +2,26 @@
 
 ## ToDos
 
-- [ ] finally learn how to use promises
+- [x] finally learn how to use promises
 - [c] explore the LeagueApi docs
-- [ ] or use LeagueJS which seems overall better : https://www.npmjs.com/package/leaguejs
-- [ ] define the different projects to build
-- [ ] figure out how to get all users connected in the Discord channel
-- [ ] associate them to their league accounts ?
-- [ ] or just have a lost of tracked accounts, which can be added/removed
+- [x] or use LeagueJS which seems overall better : https://www.npmjs.com/package/leaguejs
+- [x] define the different projects to build
+- [c] figure out how to get all users connected in the Discord channel
+- [c] associate them to their league accounts ?
+- [x] or just have a lost of tracked accounts, which can be added/removed
     using Discord messages
-- [ ] figure out how to execute a task on a regular basis
-- [ ] figure out how to get info on the current game of a player
-- [ ] define the architecture of the current match(es) tracker
+- [x] figure out how to execute a task on a regular basis
+- [x] figure out how to get info on the current game of a player
+- [x] define the architecture of the current match(es) tracker
+- [ ] add track & untrack functions
+- [ ] modify output message to embed
+- [ ] align the text on output message
+- [ ] add winrate on the champions played (implies 10 additionnal requests)
+- [ ] change `last` command wo an actual command
 
-## Architecture
+## Projects
 
-### Current match tracker
+### Current match tracker [x]
 
 The idea is to have a list of players followed (either the connected players or
 a list of players managed from the Discord channel) and output the rank and
@@ -31,6 +36,8 @@ This requires:
 - a way to get the passed games of a player
 - a way to print a bunch of info cleanly on Discord (embed msgs ?)
 
-### Last match history
+### Last match history [x]
 
-On request with a given player's name, output the last amtch in their history.
+On request with a given player's name, output the last match in their history.
+
+### Win rate on a champion for a given player

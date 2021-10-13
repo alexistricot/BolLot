@@ -2,6 +2,7 @@ module.exports = currentMatchToString;
 
 const data = require('./data.json');
 const config = require('./config.json');
+const Discord = require('discord.js');
 
 function currentMatchToString(match, leagueJs, discordClient) {
     console.log(match);
@@ -25,9 +26,14 @@ function currentMatchToString(match, leagueJs, discordClient) {
     Promise.all(promises).then(handlePromises(discordClient, summonerName, team, gameType));
 }
 
-function send_string(channel, output_str) {
-    console.log(`output_str: ${output_str}\n`);
-    channel.send(output_str);
+function send_string(channel, title, content, summonerName) {
+    const embed = new Discord.MessageEmbed();
+    embed.setTitle(title);
+    for (let i = 0; i < content.length; i++) {
+        embed.addField(summonerName[i], content[i]);
+    }
+    console.log(embed);
+    channel.send({ embeds: [embed] });
 }
 
 function getChannel(discordClient) {
@@ -36,19 +42,19 @@ function getChannel(discordClient) {
 
 function handlePromises(discordClient, summonerName, team, gameType) {
     return (championLeague) => {
-        console.log(championLeague);
         const champion = championLeague.slice(0, championLeague.length / 2);
-        console.log(champion);
         const league = championLeague.slice(championLeague.length / 2);
-        console.log(league);
-        let output = `${gameTypeToString(gameType)} game started\n`;
+        const title = `${gameTypeToString(gameType)}`;
+        const list_output = [];
         for (let i = 0; i < summonerName.length; i++) {
-            output += `${team[i]} **${summonerName[i]}** *${champion[i]['name']}*`;
+            let output = '';
+            output += `${team[i]} *${champion[i]['name']}*`;
             output += ' | ';
             output += leagueToString(league[i]);
+            list_output.push(output);
         }
         const channel = getChannel(discordClient);
-        send_string(channel, output);
+        send_string(channel, title, list_output, summonerName);
     };
 }
 
