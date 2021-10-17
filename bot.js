@@ -1,4 +1,4 @@
-const handleMessage = require('./handleMessage');
+const handleCommands = require('./handleCommands');
 const listenForGames = require('./listenForGames');
 
 // Riot API interactions
@@ -8,7 +8,7 @@ const leagueJs = require('./initLeague');
 const client = require('./initDiscord');
 
 // message handling
-client.on('messageCreate', handleMessage(leagueJs));
+client.on('interactionCreate', handleCommands(leagueJs));
 
 // listen for starting games
 listenForGames(leagueJs, client);
