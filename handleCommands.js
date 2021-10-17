@@ -16,9 +16,11 @@ module.exports = function(leagueJs) {
             lastGameBySummonerName(interaction, leagueJs, summoner);
             break;
         case 'track':
+            interaction.reply('Working...');
             trackPlayer(interaction, leagueJs, summoner);
             break;
         case 'untrack':
+            interaction.reply('Working...');
             untrackPlayer(interaction, leagueJs, summoner);
             break;
         default:
@@ -46,14 +48,14 @@ function trackPlayer(interaction, leagueJs, summonerName) {
         .then((summoner) => {
             tracker['players'][summonerName.toLowerCase()] = summoner['puuid'];
             fs.writeFile('./tracker.json', JSON.stringify(tracker), console.error);
-            interaction.reply(
+            interaction.editReply(
                 `Tracking player ${summonerName}. Tracked players : ${trackedPlayersToString(
                     tracker,
                 )}`,
             );
         })
         .catch((error) => {
-            interaction.reply(`Did not find summoner ${summonerName}.`);
+            interaction.editReply(`Did not find summoner ${summonerName}.`);
             console.log(error);
         });
 }
@@ -63,13 +65,13 @@ function untrackPlayer(interaction, leagueJs, summonerName) {
     if (Object.keys(tracker.players).includes(summonerName.toLowerCase())) {
         delete tracker['players'][summonerName.toLowerCase()];
         fs.writeFile('./tracker.json', JSON.stringify(tracker), console.error);
-        interaction.reply(
+        interaction.editReply(
             `Untracked player ${summonerName}.` +
                 ` Tracked players : ${trackedPlayersToString(tracker)}`,
         );
     }
     else {
-        interaction.reply(
+        interaction.editReply(
             `Player ${summonerName} is untracked.` +
                 ` Tracked players : ${trackedPlayersToString(tracker)}`,
         );
