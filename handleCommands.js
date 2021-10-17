@@ -11,15 +11,15 @@ module.exports = function(leagueJs) {
         // execute the command
         switch (interaction.commandName) {
         case 'last':
-            await interaction.reply('Working...');
+            await interaction.reply('`Working...`');
             lastGameBySummonerName(interaction, leagueJs, summoner);
             break;
         case 'track':
-            await interaction.reply('Working...');
+            await interaction.reply('`Working...`');
             trackPlayer(interaction, leagueJs, summoner);
             break;
         case 'untrack':
-            await interaction.reply('Working...');
+            await interaction.reply('`Working...`');
             untrackPlayer(interaction, leagueJs, summoner);
             break;
         default:
