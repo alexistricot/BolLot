@@ -2,7 +2,7 @@ const matchToString = require('./matchToString');
 const fs = require('fs');
 
 module.exports = function(leagueJs) {
-    return function(interaction) {
+    return async function(interaction) {
         // get the command name and the arguments
         if (interaction.user.bot) return;
         if (!interaction.isCommand()) return;
@@ -12,15 +12,15 @@ module.exports = function(leagueJs) {
         console.log(summoner);
         switch (interaction.commandName) {
         case 'last':
-            interaction.reply('Working...');
+            await interaction.reply('Working...');
             lastGameBySummonerName(interaction, leagueJs, summoner);
             break;
         case 'track':
-            interaction.reply('Working...');
+            await interaction.reply('Working...');
             trackPlayer(interaction, leagueJs, summoner);
             break;
         case 'untrack':
-            interaction.reply('Working...');
+            await interaction.reply('Working...');
             untrackPlayer(interaction, leagueJs, summoner);
             break;
         default:
@@ -36,7 +36,13 @@ function lastGameBySummonerName(interaction, leagueJs, summonerName) {
                 // get the last game
                 const last_match = data['matches'][0];
                 console.log(last_match['metadata']);
-                interaction.editReply(matchToString(last_match));
+                const output = matchToString(last_match);
+                if (interaction.replied) {
+                    interaction.editReply(output);
+                }
+                else {
+                    interaction.reply(output);
+                }
             },
         );
     });
@@ -46,16 +52,25 @@ function trackPlayer(interaction, leagueJs, summonerName) {
     const tracker = JSON.parse(fs.readFileSync('./tracker.json'));
     leagueJs.Summoner.gettingByName(summonerName)
         .then((summoner) => {
-            tracker['players'][summonerName.toLowerCase()] = summoner['puuid'];
+            tracker['players'][summonerName.toLowerCase()] = summoner['id'];
             fs.writeFile('./tracker.json', JSON.stringify(tracker), console.error);
-            interaction.editReply(
-                `Tracking player ${summonerName}. Tracked players : ${trackedPlayersToString(
-                    tracker,
-                )}`,
-            );
+            const output =
+                `Tracking player ${summonerName}.` +
+                ` Tracked players : ${trackedPlayersToString(tracker)}`;
+            if (interaction.replied) {
+                interaction.editReply(output);
+            }
+            else {
+                interaction.reply(output);
+            }
         })
         .catch((error) => {
-            interaction.editReply(`Did not find summoner ${summonerName}.`);
+            if (interaction.replied) {
+                interaction.editReply(`Did not find summoner ${summonerName}.`);
+            }
+            else {
+                interaction.reply(`Did not find summoner ${summonerName}.`);
+            }
             console.log(error);
         });
 }
@@ -65,16 +80,26 @@ function untrackPlayer(interaction, leagueJs, summonerName) {
     if (Object.keys(tracker.players).includes(summonerName.toLowerCase())) {
         delete tracker['players'][summonerName.toLowerCase()];
         fs.writeFile('./tracker.json', JSON.stringify(tracker), console.error);
-        interaction.editReply(
+        const output =
             `Untracked player ${summonerName}.` +
-                ` Tracked players : ${trackedPlayersToString(tracker)}`,
-        );
+            ` Tracked players : ${trackedPlayersToString(tracker)}`;
+        if (interaction.replied) {
+            interaction.editReply(output);
+        }
+        else {
+            interaction.reply(output);
+        }
     }
     else {
-        interaction.editReply(
+        const output =
             `Player ${summonerName} is untracked.` +
-                ` Tracked players : ${trackedPlayersToString(tracker)}`,
-        );
+            ` Tracked players : ${trackedPlayersToString(tracker)}`;
+        if (interaction.replied) {
+            interaction.editReply(output);
+        }
+        else {
+            interaction.reply(output);
+        }
     }
 }
 
