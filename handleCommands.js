@@ -3,13 +3,12 @@ const fs = require('fs');
 
 module.exports = function(leagueJs) {
     return async function(interaction) {
-        // get the command name and the arguments
+        // check the interaction
         if (interaction.user.bot) return;
         if (!interaction.isCommand()) return;
-        // check if the command corresponds to one of the aliases
-        console.log(interaction.options.data);
+        // get the argument
         const summoner = summonerInteraction(interaction);
-        console.log(summoner);
+        // execute the command
         switch (interaction.commandName) {
         case 'last':
             await interaction.reply('Working...');
@@ -37,12 +36,7 @@ function lastGameBySummonerName(interaction, leagueJs, summonerName) {
                 const last_match = data['matches'][0];
                 console.log(last_match['metadata']);
                 const output = matchToString(last_match);
-                if (interaction.replied) {
-                    interaction.editReply(output);
-                }
-                else {
-                    interaction.reply(output);
-                }
+                reply(interaction, output);
             },
         );
     });
@@ -57,20 +51,11 @@ function trackPlayer(interaction, leagueJs, summonerName) {
             const output =
                 `Tracking player ${summonerName}.` +
                 ` Tracked players : ${trackedPlayersToString(tracker)}`;
-            if (interaction.replied) {
-                interaction.editReply(output);
-            }
-            else {
-                interaction.reply(output);
-            }
+            reply(interaction, output);
         })
         .catch((error) => {
-            if (interaction.replied) {
-                interaction.editReply(`Did not find summoner ${summonerName}.`);
-            }
-            else {
-                interaction.reply(`Did not find summoner ${summonerName}.`);
-            }
+            const output = `Did not find summoner ${summonerName}.`;
+            reply(interaction, output);
             console.log(error);
         });
 }
@@ -83,23 +68,13 @@ function untrackPlayer(interaction, leagueJs, summonerName) {
         const output =
             `Untracked player ${summonerName}.` +
             ` Tracked players : ${trackedPlayersToString(tracker)}`;
-        if (interaction.replied) {
-            interaction.editReply(output);
-        }
-        else {
-            interaction.reply(output);
-        }
+        reply(interaction, output);
     }
     else {
         const output =
             `Player ${summonerName} is untracked.` +
             ` Tracked players : ${trackedPlayersToString(tracker)}`;
-        if (interaction.replied) {
-            interaction.editReply(output);
-        }
-        else {
-            interaction.reply(output);
-        }
+        reply(interaction, output);
     }
 }
 
@@ -111,4 +86,14 @@ function trackedPlayersToString(tracker) {
 
 function summonerInteraction(interaction) {
     return interaction.options.data[0].value;
+}
+
+function reply(interaction, message) {
+    if (interaction.replied) {
+        interaction.editReply(message);
+    }
+    else {
+        interaction.reply(message);
+    }
+    console.log(message);
 }
