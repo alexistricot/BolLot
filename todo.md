@@ -13,11 +13,11 @@
 - [x] figure out how to execute a task on a regular basis
 - [x] figure out how to get info on the current game of a player
 - [x] define the architecture of the current match(es) tracker
-- [ ] add track & untrack functions
-- [ ] modify output message to embed
+- [x] add track & untrack functions
+- [x] modify output message to embed
 - [ ] align the text on output message
-- [ ] add winrate on the champions played (implies 10 additionnal requests)
-- [ ] change `last` command wo an actual command
+- [ ] add winrate on the champions played (implies 10 additional requests)
+- [x] change `last` command to an actual command
 
 ## Projects
 
