@@ -26,7 +26,7 @@ function currentMatchToString(match, leagueJs, discordClient) {
     Promise.all(promises).then(handlePromises(discordClient, summonerName, team, gameType));
 }
 
-function send_string(channel, title, content, summonerName) {
+function sendString(channel, title, content, summonerName) {
     const embed = new Discord.MessageEmbed();
     embed.setTitle(title);
     for (let i = 0; i < content.length; i++) {
@@ -54,7 +54,7 @@ function handlePromises(discordClient, summonerName, team, gameType) {
             list_output.push(output);
         }
         const channel = getChannel(discordClient);
-        send_string(channel, title, list_output, summonerName);
+        sendString(channel, title, list_output, summonerName);
     };
 }
 

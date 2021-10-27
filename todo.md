@@ -40,7 +40,7 @@ This requires:
 
 On request with a given player's name, output the last match in their history.
 
-### Win rate on a champion for a given player
+### Win rate on a champion for a given player [ ]
 
 - [ ] get player puiid and recent games
   - `leagueJs.Summoner.gettingById(summonerId)` => `summoner["puiid"]`
