@@ -3,6 +3,7 @@ module.exports = currentMatchToString;
 const data = require('./data.json');
 const config = require('./config.json');
 const Discord = require('discord.js');
+const getChampionEmoji = require('./champion-emoji');
 
 function currentMatchToString(match, leagueJs, discordClient) {
     console.log(match);
@@ -41,14 +42,15 @@ function getChannel(discordClient) {
 }
 
 function handlePromises(discordClient, summonerName, team, gameType) {
-    return (championLeague) => {
+    return async (championLeague) => {
         const champion = championLeague.slice(0, championLeague.length / 2);
         const league = championLeague.slice(championLeague.length / 2);
         const title = `${gameTypeToString(gameType)}`;
         const list_output = [];
         for (let i = 0; i < summonerName.length; i++) {
             let output = '';
-            output += `${team[i]} *${champion[i]['name']}*`;
+            const championEmoji = await getChampionEmoji(discordClient, champion[i]);
+            output += `${team[i]} ${championEmoji.toString()} *${champion[i]['name']}*`;
             output += ' | ';
             output += leagueToString(league[i]);
             list_output.push(output);

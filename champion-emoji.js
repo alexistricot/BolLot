@@ -5,9 +5,7 @@ module.exports = getChampionEmoji;
 
 uri = 'http://ddragon.leagueoflegends.com/cdn/12.2.1/img/champion/';
 
-async function getChampionEmoji(client, leagueJs, championId) {
-    // get the champion object form static data
-    const champion = await leagueJs.StaticData.gettingChampionById(championId);
+async function getChampionEmoji(client, champion) {
     // build the emoji name for this champion
     const emojiName = getChampionEmojiName(champion.name);
     // get the guild
@@ -21,7 +19,7 @@ async function getChampionEmoji(client, leagueJs, championId) {
 }
 
 function getChampionEmojiName(championName) {
-    return championName.toLowerCase().replace(' ', '-');
+    return championName.toLowerCase().replace(' ', '').replace("'", '');
 }
 
 function getChampionUrl(champion) {
