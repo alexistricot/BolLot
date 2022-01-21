@@ -2,6 +2,7 @@ module.exports = currentMatchToString;
 
 const data = require('./data.json');
 const config = require('./config.json');
+const fs = require('fs');
 const Discord = require('discord.js');
 const getChampionEmoji = require('./champion-emoji');
 
@@ -27,14 +28,17 @@ function currentMatchToString(match, leagueJs, discordClient) {
     Promise.all(promises).then(handlePromises(discordClient, summonerName, team, gameType));
 }
 
-function sendString(channel, title, content, summonerName) {
+async function sendString(channel, title, content, summonerName) {
     const embed = new Discord.MessageEmbed();
     embed.setTitle(title);
+    const tracker = JSON.parse(fs.readFileSync('./tracker.json'));
     for (let i = 0; i < content.length; i++) {
-        embed.addField(summonerName[i], content[i]);
+        const isTracked = Object.keys(tracker.players).includes(summonerName[i].toLowerCase());
+        const summNameOut = isTracked ? `**${summonerName[i]}**` : summonerName[i];
+        embed.addField(summNameOut, content[i]);
     }
     console.log(embed);
-    channel.send({ embeds: [embed] });
+    await channel.send({ embeds: [embed] });
 }
 
 function getChannel(discordClient) {
@@ -47,16 +51,23 @@ function handlePromises(discordClient, summonerName, team, gameType) {
         const league = championLeague.slice(championLeague.length / 2);
         const title = `${gameTypeToString(gameType)}`;
         const list_output = [];
+        // list emojis so we can delete them later
+        const emojis = [];
         for (let i = 0; i < summonerName.length; i++) {
             let output = '';
             const championEmoji = await getChampionEmoji(discordClient, champion[i]);
+            emojis.push(championEmoji);
             output += `${team[i]} ${championEmoji.toString()} *${champion[i]['name']}*`;
             output += ' | ';
             output += leagueToString(league[i]);
             list_output.push(output);
         }
         const channel = getChannel(discordClient);
-        sendString(channel, title, list_output, summonerName);
+        await sendString(channel, title, list_output, summonerName);
+        // delete emojis to make room
+        for (const e of emojis) {
+            e.delete();
+        }
     };
 }
 
