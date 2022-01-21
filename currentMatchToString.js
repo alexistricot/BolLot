@@ -65,10 +65,12 @@ function gameTypeToString(gameType) {
 function leagueToString(leagues) {
     let output = '';
     for (let i = 0; i < leagues.length; i++) {
-        output += bold(data['rankedQueueType'][leagues[i]['queueType']]);
-        output += ` ${leagues[i]['tier']} ${leagues[i]['rank']}`;
-        output += ` *(${leagues[i]['wins']}-${leagues[i]['losses']})*`;
-        output += ' | ';
+        if (Object.keys(data['rankedQueueType']).includes(leagues[i]['queueType'])) {
+            output += bold(data['rankedQueueType'][leagues[i]['queueType']]);
+            output += ` ${leagues[i]['tier']} ${leagues[i]['rank']}`;
+            output += ` *(${leagues[i]['wins']}-${leagues[i]['losses']})*`;
+            output += ' | ';
+        }
     }
     output += '\n';
     return output;
