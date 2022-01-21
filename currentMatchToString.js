@@ -34,7 +34,7 @@ async function sendString(channel, title, content, summonerName) {
     const tracker = JSON.parse(fs.readFileSync('./tracker.json'));
     for (let i = 0; i < content.length; i++) {
         const isTracked = Object.keys(tracker.players).includes(summonerName[i].toLowerCase());
-        const summNameOut = isTracked ? `**${summonerName[i]}**` : summonerName[i];
+        const summNameOut = isTracked ? `:smiling_imp: **${summonerName[i]}**` : summonerName[i];
         embed.addField(summNameOut, content[i]);
     }
     console.log(embed);
