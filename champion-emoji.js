@@ -19,7 +19,7 @@ async function getChampionEmoji(client, champion) {
 }
 
 function getChampionEmojiName(championName) {
-    return championName.toLowerCase().replace(' ', '').replace("'", '');
+    return championName.toLowerCase().replace(' ', '').replace("'", '').replace('.', '');
 }
 
 function getChampionUrl(champion) {
