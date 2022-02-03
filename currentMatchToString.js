@@ -39,6 +39,7 @@ async function sendString(channel, title, content, summonerName) {
     }
     console.log(embed);
     await channel.send({ embeds: [embed] });
+    return;
 }
 
 function getChannel(discordClient) {
@@ -66,7 +67,11 @@ function handlePromises(discordClient, summonerName, team, gameType) {
         await sendString(channel, title, list_output, summonerName);
         // delete emojis to make room
         for (const e of emojis) {
-            e.delete();
+            try {
+                e.delete();
+            }
+            finally {
+            }
         }
     };
 }
