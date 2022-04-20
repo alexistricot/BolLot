@@ -3,7 +3,7 @@ const requestPromise = require('request-promise');
 
 module.exports = getChampionEmoji;
 
-uri = 'http://ddragon.leagueoflegends.com/cdn/12.2.1/img/champion/';
+uri = 'http://ddragon.leagueoflegends.com/cdn/12.7.1/img/champion/';
 
 async function getChampionEmoji(client, champion) {
     // build the emoji name for this champion
@@ -28,12 +28,15 @@ function getChampionEmojiName(championName) {
 }
 
 function getChampionUrl(champion) {
-    return uri + champion.image.full;
+    console.log(`champion image: ${JSON.stringify(champion.image)}`);
+    return `http://ddragon.leagueoflegends.com/cdn/${champion.version}/img/champion/${champion.image.full}`;
 }
 
 async function createEmoji(guild, champion) {
     const imageUrl = getChampionUrl(champion);
     const emojiName = getChampionEmojiName(champion.name);
+    console?.log(`creating emoji ${emojiName}`);
+    console?.log(`image url: ${imageUrl}`);
     await guild.emojis.create(imageUrl, emojiName);
     return guild.emojis.cache.find((e) => e.name == emojiName);
 }
