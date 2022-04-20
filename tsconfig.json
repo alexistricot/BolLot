@@ -1,0 +1,14 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "strict": true,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "resolveJsonModule": true,
+        "outDir": "out",
+        "sourceMap": true,
+        "lib": [
+            "ES2021"
+        ]
+    }
+}

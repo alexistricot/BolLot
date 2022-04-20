@@ -1,0 +1,1 @@
+declare module 'leaguejs/lib/LeagueJS.js';

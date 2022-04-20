@@ -1,9 +1,7 @@
-const config = require('./config.json');
-const requestPromise = require('request-promise');
+import * as config from './config/config.json';
+export default getChampionEmoji;
 
-module.exports = getChampionEmoji;
-
-uri = 'http://ddragon.leagueoflegends.com/cdn/12.2.1/img/champion/';
+const uri = 'http://ddragon.leagueoflegends.com/cdn/12.2.1/img/champion/';
 
 async function getChampionEmoji(client, champion) {
     // build the emoji name for this champion
@@ -18,7 +16,7 @@ async function getChampionEmoji(client, champion) {
     return emoji;
 }
 
-function getChampionEmojiName(championName) {
+function getChampionEmojiName(championName: string) {
     return championName
         .toLowerCase()
         .replaceAll(' ', '')

@@ -48,4 +48,22 @@ On request with a given player's name, output the last match in their history.
     - ```javascript
         matches: [
         { metadata: [Object], info: [Object] }, ...}```
-  - 
+
+
+## Migration to TypeScript
+
+- Do I need to describe the interfaces of the `leagueJS` objects I'm using ?
+  - Match
+  - Summoner
+  - Champion
+  - StaticData
+  - Spectator
+- ➡️ would need to make an inventory of the functions to export, for which I'd need
+    to build describe the interfaces
+- ➡️ some types are declared in the `leagueJS` code with `@types` decorators
+- ❓ Could it be easier to directly re-code the API ? Sounds like a pain
+  - this + existing typing should be the easiest if its still up to date
+- Some typing of API responses exist: 
+  - NPM: https://www.npmjs.com/package/riot-api-typedef
+  - GitHub: https://github.com/Goyatuzo/riot-api-typedef
+- 

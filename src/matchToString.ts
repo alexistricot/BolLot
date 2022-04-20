@@ -1,6 +1,10 @@
-const data = require('./data.json');
+import  data from './config/data';
 
-module.exports = function matchToString(match) {
+// !!! data structure has changed
+
+export default matchToString;
+
+function matchToString(match) {
     // initialize output
     let output = '';
     // match metadata

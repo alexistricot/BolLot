@@ -1,12 +1,14 @@
-module.exports = currentMatchToString;
+export default currentMatchToString;
 
-const data = require('./data.json');
-const config = require('./config.json');
-const fs = require('fs');
-const Discord = require('discord.js');
-const getChampionEmoji = require('./champion-emoji');
+import {data, getTeamDisplay, getQueueDisplay } from './config/data';
+import * as config from './config/config.json';
+import fs = require('fs');
+import { Client, MessageEmbed, TextChannel } from 'discord.js';
+import getChampionEmoji from './champion-emoji';
 
-function currentMatchToString(match, leagueJs, discordClient) {
+// !!! data changed strucure
+
+function currentMatchToString(match, leagueJs, discordClient: Client) {
     console.log(match);
     // participants
     const participants = match['participants'];
@@ -16,7 +18,7 @@ function currentMatchToString(match, leagueJs, discordClient) {
     const team = [];
     const gameType = match['gameType'];
     for (const player of participants) {
-        team.push(data['teams'][String(player['teamId'])]);
+        team.push(getTeamDisplay(data, player['teamId']));
         championId.push(String(player['championId']));
         summonerName.push(String(player['summonerName']));
         summonerId.push(String(player['summonerId']));
@@ -28,10 +30,10 @@ function currentMatchToString(match, leagueJs, discordClient) {
     Promise.all(promises).then(handlePromises(discordClient, summonerName, team, gameType));
 }
 
-async function sendString(channel, title, content, summonerName) {
-    const embed = new Discord.MessageEmbed();
+async function sendString(channel: TextChannel, title: string, content, summonerName: string[]) {
+    const embed = new MessageEmbed();
     embed.setTitle(title);
-    const tracker = JSON.parse(fs.readFileSync('./tracker.json'));
+    const tracker = JSON.parse(fs.readFileSync('./tracker.json').toString());
     for (let i = 0; i < content.length; i++) {
         const isTracked = Object.keys(tracker.players).includes(summonerName[i].toLowerCase());
         const summNameOut = isTracked ? `:smiling_imp: **${summonerName[i]}**` : summonerName[i];
@@ -42,15 +44,17 @@ async function sendString(channel, title, content, summonerName) {
     return;
 }
 
-function getChannel(discordClient) {
-    return discordClient.channels.cache.find((chan) => chan.id == config['channel']);
+function getChannel(discordClient: Client) : TextChannel {
+    var channel = discordClient.channels.cache.find((chan) => chan.id == config['channel']);
+    if (channel instanceof TextChannel) return channel
+    else throw TypeError("Configured default channel is not a TextChannel.")
 }
 
-function handlePromises(discordClient, summonerName, team, gameType) {
+function handlePromises(discordClient: Client, summonerName: string[], team: string[], gameType: string[]) {
     return async (championLeague) => {
         const champion = championLeague.slice(0, championLeague.length / 2);
         const league = championLeague.slice(championLeague.length / 2);
-        const title = `${gameTypeToString(gameType)}`;
+        const title = `${String(gameType)}`;
         const list_output = [];
         // list emojis so we can delete them later
         const emojis = [];
@@ -76,9 +80,6 @@ function handlePromises(discordClient, summonerName, team, gameType) {
     };
 }
 
-function gameTypeToString(gameType) {
-    return String(gameType);
-}
 
 function leagueToString(leagues) {
     let output = '';
@@ -94,6 +95,6 @@ function leagueToString(leagues) {
     return output;
 }
 
-function bold(str) {
+function bold(str: string) {
     return '**' + str + '**';
 }
