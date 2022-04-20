@@ -30,10 +30,14 @@ function getCurrentGames(leagueJs, discordClient) {
                         fs.writeFile('tracker.json', JSON.stringify(tracker), errorHandling);
                         currentMatchToString(match, leagueJs, discordClient);
                     }
+                    else {
+                        console.log(`Player ${player} in already handled game ${match.gameId}.`);
+                    }
                 })
                 .catch((err) => {
-                    if (err & err.error & err?.error.includes('Data not found')) {
-                        console.log('No match found.');
+                    const error = JSON.parse(err.error);
+                    if (error.status.message && error.status.message.includes('Data not found')) {
+                        console.log(`No match found for ${player} with id ${summonerId}.`);
                         return;
                     }
                 });

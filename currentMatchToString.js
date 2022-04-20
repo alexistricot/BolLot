@@ -67,11 +67,7 @@ function handlePromises(discordClient, summonerName, team, gameType) {
         await sendString(channel, title, list_output, summonerName);
         // delete emojis to make room
         for (const e of emojis) {
-            try {
-                e.delete();
-            }
-            finally {
-            }
+            e.delete().catch(console.error);
         }
     };
 }
