@@ -31,13 +31,13 @@ function getCurrentGames(leagueJs, discordClient) {
                         currentMatchToString(match, leagueJs, discordClient);
                     }
                     else {
-                        console.log(`Player ${player} in already handled game ${match.gameId}.`);
+                        // console.log(`Player ${player} in already handled game ${match.gameId}.`);
                     }
                 })
                 .catch((err) => {
                     const error = JSON.parse(err.error);
                     if (error.status.message && error.status.message.includes('Data not found')) {
-                        console.log(`No match found for ${player} with id ${summonerId}.`);
+                        // console.log(`No match found for ${player} with id ${summonerId}.`);
                         return;
                     }
                 });
