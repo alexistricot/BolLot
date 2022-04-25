@@ -6,6 +6,8 @@ const fs = require('fs');
 const Discord = require('discord.js');
 const getChampionEmoji = require('./champion-emoji');
 
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 function currentMatchToString(match, leagueJs, discordClient) {
     console.log(match);
     // participants
@@ -64,7 +66,9 @@ function handlePromises(discordClient, summonerName, team, gameType) {
             list_output.push(output);
         }
         const channel = getChannel(discordClient);
+        await delay(1000);
         await sendString(channel, title, list_output, summonerName);
+        await delay(1000);
         // delete emojis to make room
         for (const e of emojis) {
             e.delete().catch(console.error);
