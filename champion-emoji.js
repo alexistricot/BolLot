@@ -1,7 +1,7 @@
 const config = require('./config.json');
 const requestPromise = require('request-promise');
 
-module.exports = getChampionEmoji;
+module.exports = { getChampionEmoji, removeEmojis };
 
 uri = 'http://ddragon.leagueoflegends.com/cdn/12.7.1/img/champion/';
 
@@ -39,4 +39,14 @@ async function createEmoji(guild, champion) {
     console?.log(`image url: ${imageUrl}`);
     await guild.emojis.create(imageUrl, emojiName);
     return guild.emojis.cache.find((e) => e.name == emojiName);
+}
+
+function removeEmojis(guild) {
+    guild.emojis.fetch().then((emojis) => {
+        for (const emoji of emojis) {
+            if (emoji.author.id === guild.client.user.id) {
+                emoji.delete().then(console.log);
+            }
+        }
+    });
 }

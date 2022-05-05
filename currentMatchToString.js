@@ -4,7 +4,7 @@ const data = require('./data.json');
 const config = require('./config.json');
 const fs = require('fs');
 const Discord = require('discord.js');
-const getChampionEmoji = require('./champion-emoji');
+const { getChampionEmoji } = require('./champion-emoji');
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 

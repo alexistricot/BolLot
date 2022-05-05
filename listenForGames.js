@@ -4,9 +4,15 @@ module.exports = listenForGames;
 const config = require('./config.json');
 const currentMatchToString = require('./currentMatchToString');
 const fs = require('fs');
+const { removeEmojis } = require('./champion-emoji');
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 function listenForGames(leagueJs, discordClient) {
     setInterval(getCurrentGames(leagueJs, discordClient), 1000 * config['interval']);
+    await delay(500 * config['interval']);
+    guild = discordClient.guilds.cache.find((g) => g.id == config['guild']);
+    setInterval(removeEmojis(guild), 1000 * config['interval']);
 }
 
 function errorHandling(err) {
@@ -29,8 +35,7 @@ function getCurrentGames(leagueJs, discordClient) {
                         tracker['games'].push(match.gameId);
                         fs.writeFile('tracker.json', JSON.stringify(tracker), errorHandling);
                         currentMatchToString(match, leagueJs, discordClient);
-                    }
-                    else {
+                    } else {
                         // console.log(`Player ${player} in already handled game ${match.gameId}.`);
                     }
                 })
