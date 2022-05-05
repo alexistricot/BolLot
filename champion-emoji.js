@@ -46,6 +46,7 @@ function removeEmojis(guild) {
         guild.emojis.fetch().then((emojis) => {
             emojis.forEach((emoji) => {
                 if (emoji.author.id === guild.client.user.id) {
+                    console.log(`Removing emoji ${emoji?.name}`);
                     emoji.delete().then(console.log);
                 }
             });
