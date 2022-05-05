@@ -8,7 +8,7 @@ const { removeEmojis } = require('./champion-emoji');
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-function listenForGames(leagueJs, discordClient) {
+async function listenForGames(leagueJs, discordClient) {
     setInterval(getCurrentGames(leagueJs, discordClient), 1000 * config['interval']);
     await delay(500 * config['interval']);
     guild = discordClient.guilds.cache.find((g) => g.id == config['guild']);
@@ -35,7 +35,8 @@ function getCurrentGames(leagueJs, discordClient) {
                         tracker['games'].push(match.gameId);
                         fs.writeFile('tracker.json', JSON.stringify(tracker), errorHandling);
                         currentMatchToString(match, leagueJs, discordClient);
-                    } else {
+                    }
+                    else {
                         // console.log(`Player ${player} in already handled game ${match.gameId}.`);
                     }
                 })
