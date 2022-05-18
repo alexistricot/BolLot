@@ -43,13 +43,16 @@ async function createEmoji(guild, champion) {
 
 function removeEmojis(guild) {
     return () => {
-        guild.emojis.fetch().then((emojis) => {
-            emojis.forEach((emoji) => {
-                if (emoji.author.id === guild.client.user.id) {
-                    console.log(`Removing emoji ${emoji?.name}`);
-                    emoji.delete().then(console.log);
-                }
-            });
-        });
+        guild.emojis
+            .fetch()
+            .then((emojis) => {
+                emojis.forEach((emoji) => {
+                    if (emoji.author.id === guild.client.user.id) {
+                        console.log(`Removing emoji ${emoji?.name}`);
+                        emoji.delete().then(console.log);
+                    }
+                });
+            })
+            .catch(console.error);
     };
 }
